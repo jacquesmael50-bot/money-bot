@@ -5,21 +5,26 @@ import path from 'path';
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
-// Collection pour toutes les commandes
 client.commands = new Collection();
 
-// Charger les commandes depuis /commands
 const commandsPath = path.join('./commands');
 fs.readdirSync(commandsPath).forEach(file => {
     if (file.endsWith('.js')) {
         import(`./commands/${file}`).then(commandModule => {
-            const commandName = commandModule.name;
-            client.commands.set(commandName, commandModule);
+            // Enregistre la commande principale (name + execute)
+            if (commandModule.name && commandModule.execute) {
+                client.commands.set(commandModule.name, commandModule);
+            }
+            // Enregistre aussi toutes les autres fonctions exportées comme commandes
+            for (const [key, value] of Object.entries(commandModule)) {
+                if (key !== 'name' && key !== 'execute' && typeof value === 'function') {
+                    client.commands.set(key, { execute: value });
+                }
+            }
         });
     }
 });
 
-// Listener messages
 client.on('messageCreate', async (message) => {
     if (!message.content.startsWith('+') || message.author.bot) return;
 
