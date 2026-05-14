@@ -16,6 +16,20 @@ export async function getOrCreateUser(discordId, username) {
     return inserted[0];
 }
 
+export async function saveUser(user) {
+    await db.update(usersTable)
+        .set({
+            username: user.username,
+            wallet: user.wallet,
+            bank: user.bank,
+            lastDaily: user.lastDaily,
+            lastWeekly: user.lastWeekly,
+            lastWork: user.lastWork,
+            lastCrime: user.lastCrime,
+        })
+        .where(eq(usersTable.discordId, user.discordId));
+}
+
 export function formatMoney(amount) {
-    return '$' + amount.toLocaleString();
+    return '$' + Number(amount).toLocaleString();
 }
