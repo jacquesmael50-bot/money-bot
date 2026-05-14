@@ -8,7 +8,7 @@ export async function execute(message, args) {
 
     const amountStr = args[0];
     const amount = BigInt(parseInt(amountStr));
-    if (!amountStr || amount <= 0n || amount > 100000n) return message.reply("Invalid amount!");
+    if (!amountStr || amount <= 0n || amount > 100000000n) return message.reply("Invalid amount!");
 
     const user = await getOrCreateUser(message.author.id, message.author.username);
     user.wallet += amount;
