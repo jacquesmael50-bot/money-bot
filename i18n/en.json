@@ -1,0 +1,14 @@
+{
+    "err_no_permission": "You do not have permission to do that!",
+    "err_invalid_amount": "Invalid amount!",
+    "addmoney_err_usage": "Usage: +addmoney <number>",
+    "addmoney_err_limit": "You can only add up to {limit} per day, remaining: {remaining}",
+    "give_err_usage": "Usage: +give <user> <number> or +give me <number>",
+    "give_me_success": "You received {amount}!",
+    "give_title": "Money Given",
+    "give_desc": "{user} received {amount}",
+    "addmoney_title": "Money Added",
+    "addmoney_desc": "{amount} added to your wallet",
+    "removemoney_title": "Money Removed",
+    "removemoney_desc": "{amount} removed from {user}"
+}
