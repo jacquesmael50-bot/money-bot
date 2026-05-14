@@ -1,5 +1,4 @@
-import { getOrCreateUser, formatMoney } from '../utils/helpers.js';
-import { getLang } from '../utils/lang.js';
+import { getOrCreateUser, saveUser, formatMoney } from '../utils/helpers.js';
 
 export const name = 'roulette';
 
@@ -16,9 +15,11 @@ export async function execute(message, args) {
 
     if (color === outcome) {
         user.wallet += bet;
+        await saveUser(user);
         message.reply(`You won! The ball landed on ${outcome}. You earned ${formatMoney(bet)}!`);
     } else {
         user.wallet -= bet;
+        await saveUser(user);
         message.reply(`You lost! The ball landed on ${outcome}. You lost ${formatMoney(bet)}!`);
     }
 }
