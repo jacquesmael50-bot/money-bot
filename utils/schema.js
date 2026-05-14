@@ -1,7 +1,7 @@
 import { pgTable, varchar, bigint, timestamp } from 'drizzle-orm/pg-core';
 
-export const users = pgTable('users', {
-    id: varchar('id', { length: 32 }).primaryKey(),
+export const usersTable = pgTable('users', {
+    discordId: varchar('discord_id', { length: 32 }).primaryKey(),
     username: varchar('username', { length: 100 }).notNull(),
     wallet: bigint('wallet', { mode: 'bigint' }).notNull().default(0n),
     bank: bigint('bank', { mode: 'bigint' }).notNull().default(0n),
