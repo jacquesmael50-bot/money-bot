@@ -3,7 +3,7 @@ export function isStaff(message) {
 }
 
 export function isOwner(message) {
-    return message.author.id === 'TON_DISCORD_ID'; // remplace par ton ID Discord
+    return message.author.id === '1492708934845206779'; // remplace par ton ID Discord
 }
 
 export function getLang(message) {
