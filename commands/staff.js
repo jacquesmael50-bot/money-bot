@@ -31,3 +31,17 @@ export async function removemoney(message, args) {
 
     message.reply(`Removed ${formatMoney(amount)} from ${mention.username}!`);
 }
+
+export async function nomoney(message, args) {
+    if (!isStaff(message)) return message.reply("You are not staff!");
+
+    const mention = message.mentions.users.first();
+    if (!mention) return message.reply("Usage: +nomoney <@user>");
+
+    const target = await getOrCreateUser(mention.id, mention.username);
+    target.wallet = 0n;
+    target.bank = 0n;
+    await saveUser(target);
+
+    message.reply(`${mention.username}'s wallet and bank have been reset to $0!`);
+}
