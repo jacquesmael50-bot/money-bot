@@ -1,35 +1,26 @@
-import { db } from './db.js';
-import { usersTable } from './schema.js';
-import { eq } from 'drizzle-orm';
+export const name = 'help';
 
-export async function getOrCreateUser(discordId, username) {
-    const existing = await db.select().from(usersTable).where(eq(usersTable.discordId, discordId));
-    if (existing.length > 0) return existing[0];
+export async function execute(message, args) {
+    message.reply(`
+💰 **SPS Money Game - Commands**
 
-    const inserted = await db.insert(usersTable).values({
-        discordId,
-        username,
-        wallet: 0n,
-        bank: 0n,
-    }).returning();
+**Economy**
+\`+bal\` - Check your balance
+\`+dep <amount|all>\` - Deposit to bank
+\`+transfer <@user> <amount>\` - Transfer money
 
-    return inserted[0];
-}
+**Earn Money**
+\`+work\` - Work to earn money
+\`+daily\` - Claim daily reward ($100,000)
+\`+weekly\` - Claim weekly reward ($500,000)
+\`+crime\` - Commit a crime
+\`+heist\` - Do a heist
 
-export async function saveUser(user) {
-    await db.update(usersTable)
-        .set({
-            username: user.username,
-            wallet: user.wallet,
-            bank: user.bank,
-            lastDaily: user.lastDaily,
-            lastWeekly: user.lastWeekly,
-            lastWork: user.lastWork,
-            lastCrime: user.lastCrime,
-        })
-        .where(eq(usersTable.discordId, user.discordId));
-}
+**Games**
+\`+roulette <red/black> <amount>\` - Play roulette
+\`+rob <@user>\` - Rob someone
 
-export function formatMoney(amount) {
-    return '$' + Number(amount).toLocaleString();
+**Staff only**
+\`+addmoney <amount>\` - Add money to yourself
+    `);
 }
