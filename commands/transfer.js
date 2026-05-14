@@ -1,14 +1,11 @@
-import { getOrCreateUser, formatMoney } from '../utils/helpers.js';
-import { getLang } from '../utils/lang.js';
+import { getOrCreateUser, saveUser, formatMoney } from '../utils/helpers.js';
 
 export const name = 'transfer';
 
 export async function execute(message, args) {
-    const lang = getLang(message);
     const mention = message.mentions.users.first();
     const amountStr = args[1];
-
-    if (!mention || !amountStr) return message.reply('Usage: +transfer <user> <amount>');
+    if (!mention || !amountStr) return message.reply('Usage: +transfer <@user> <amount>');
 
     const amount = BigInt(parseInt(amountStr));
     if (amount <= 0n) return message.reply('Invalid amount!');
@@ -20,6 +17,9 @@ export async function execute(message, args) {
 
     sender.wallet -= amount;
     recipient.wallet += amount;
+
+    await saveUser(sender);
+    await saveUser(recipient);
 
     message.reply(`You transferred ${formatMoney(amount)} to ${mention.username}!`);
 }
